@@ -20,6 +20,6 @@ app.use(cors());
 app.use(Router);
 
 //PORT
-app.listen(9000, () => {
+app.listen(8888, () => {
   console.log("Server running successfully");
 });
