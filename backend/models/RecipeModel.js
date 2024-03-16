@@ -32,6 +32,7 @@ export const getRecipeById = (id, result) => {
 //insert product to databased
 export const insertRecipe = (data, result) => {
   db.query("INSERT INTO SavedRecipes SET ?", [data], (err, results) => {
+    console.log(data)
     if (err) {
       console.log(err);
       result(err, null);

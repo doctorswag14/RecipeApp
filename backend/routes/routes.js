@@ -17,10 +17,10 @@ router.get("/recipes/:id", showRecipesById);
 router.post("/recipes", createRecipe);
 
 // Update Product
-router.put("/products/:id", updateRecipe);
+router.put("/recipes/edit/:id", updateRecipe);
 
 // Delete Product
-router.delete("/products/:id", deleteRecipe);
+router.delete("/recipes/delete/:id", deleteRecipe);
 
 //export default router
 export default router;
