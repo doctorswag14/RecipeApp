@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html ng-app="recipeApp">
+<head>
+    <title>Thomas Tech Recipe App</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="./app/shared/styles.css?v=1.0.1">
+    <style>
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header-container"></div>
+        <div ng-view></div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container d-flex align-items-center justify-content-between">
+            <p>&copy; All content Copyright © 2025 Thomas Tech</p>
+            <div class="social-links">
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.min.js"></script>
+    <script src="app.js"></script>
+    <script src="app/shared/notificationService.js"></script>
+    <script src="app/shared/loaderService.js"></script>
+    <script src="app/services/recipeService.js"></script>
+    <script src="app/controllers/recipeController.js"></script>
+    <script src="app/controllers/weekrecipesController.js"></script>
+    <script src="https://kit.fontawesome.com/a08ba768ef.js" crossorigin="anonymous"></script>
+</body>
+
+<div class="notification-container">
+    <div class="notification success" ng-show="notification.showSuccess">
+      {{ notification.successMessage }}
+    </div>
+  
+    <div class="notification fail" ng-show="notification.showFail">
+     {{ notification.failMessage }}
+    </div>
+</div>
+
+<div ng-show="isLoading" class="loader-overlay">
+    <div class="loader"></div>
+  </div>
+
+</html>

@@ -1,0 +1,29 @@
+<div>
+    <h1>All recipes</h1>
+    <button ng-click="addRecipePage()" class="btn btn-primary">Add Recipe</button>
+    <button ng-click="goToWeek()" class="btn btn-primary">Recipes For the Week</button>
+    <div style="max-height: 500px; overflow-y: auto; border: 1px solid #ddd; margin-top: 10px;">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                </tr>
+            </thead>
+            <div style="max-height: 200px; overflow-y: auto;">
+                <table class="table">
+                    <tbody>
+                        <tr ng-repeat="recipe in recipes">
+                            <td>{{ recipe.title }}</td>
+                            <td>
+                                <a ng-click="getViewRecipe(recipe.recipeId)" class="btn btn-info"><i class="fa-solid fa-magnifying-glass"></i></a>
+                                <a ng-click="getEditRecipe(recipe.recipeId)" class="btn btn-warning"><i class="fas fa-pencil"></i></a>
+                                <button ng-click="deleteRecipe(recipe.recipeId)" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i></button>
+                                <button ng-click="setRecipeForTheWeek(recipe.recipeId)" class="btn btn-info"><i class="fa-solid fa-calendar"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </table>
+    </div>
+</div>

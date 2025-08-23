@@ -1,0 +1,86 @@
+<style>
+    .edit-recipe-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-wrap: wrap; /* Allow wrapping on smaller screens */
+        gap: 20px; /* Space between form and image */
+        padding-bottom: 60px; /* Prevent content from overlapping with the button */
+    }
+
+    .edit-recipe-form {
+        flex: 1;
+        max-width: 600px; /* Maintain a fixed width for the form */
+        margin-right: 20px;
+    }
+
+    .recipe-image-container {
+        flex: 0 0 auto;
+        max-width: 300px; /* Set max width for the image */
+        display: flex;
+        align-items: center;
+        justify-content: center; /* Center the image */
+    }
+
+    .recipe-image {
+        width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+        padding: 5px;
+        border: 1px solid #ccc;
+        border-radius: 8px; /* Optional styling */
+    }
+
+    .back-home-button {
+        position: fixed; /* Fix button at the bottom-right corner */
+        bottom: 20px;
+        right: 20px;
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        z-index: 1000; /* Ensure button is above other content */
+    }
+
+    .back-home-button:hover {
+        background-color: #0056b3; /* Button hover effect */
+    }
+</style>
+
+<div ng-controller="RecipeController">
+    <div>
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+            <h2>Edit Recipe</h2>
+            <button ng-click="goHome()" class="btn btn-primary">Go Home</button>
+        </div>
+    <div class="edit-recipe-container">
+        <form ng-submit="updateRecipe()" class="edit-recipe-form">
+            <div class="form-group">
+                <label>Title</label>
+                <input type="text" ng-model="recipe.title" class="form-control" required />
+            </div>
+            <div class="form-group">
+                <label>Ingredients</label>
+                <textarea ng-model="recipe.ingredients" class="form-control" required></textarea>
+            </div>
+            <div class="form-group">
+                <label>Directions</label>
+                <textarea ng-model="recipe.directions" class="form-control" required></textarea>
+            </div>
+            <div class="form-group">
+                <label>Upload Image</label>
+                <input type="file" class="form-control" onchange="angular.element(this).scope().handleFileSelect(this)" />
+            </div>
+            <button type="submit" class="btn btn-success">Update Recipe</button>
+        </form>
+
+        <!-- Image displayed to the right of the form -->
+        <div class="recipe-image-container">
+            <img ng-src="http://thomashometech.local:8080/Images/{{ recipe.imagePath }}" alt="Recipe Image" class="recipe-image" />
+            <!-- <img ng-src="http://localhost:8080/data/Images/{{ recipe.imagePath }}" alt="Recipe Image" class="recipe-image" /> -->
+        </div>
+    </div>
+</div>

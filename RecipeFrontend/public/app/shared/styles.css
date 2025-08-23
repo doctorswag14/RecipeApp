@@ -1,0 +1,195 @@
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    flex: 1;
+}
+
+.footer {
+    background-color: #2D2D2D;
+    padding: 40px 0;
+    border-top: 1px solid #dee2e6;
+    color: white;
+}
+
+/* Default text color for all nav links */
+.nav-link {
+    color: #00000080; /* Set text color to #00000080 */
+}
+
+.nav-link:hover {
+    color: #000000; /* Optional: Change color on hover */
+}
+
+/* Ensure the same color applies to the links in the pop-out menu */
+.navbar-collapse .nav-link {
+    color: #00000080;
+}
+
+.nav-item.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+.nav-item.dropdown {
+    position: relative;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+}
+
+/* Slide-in menu styles */
+#slideMenu {
+    position: fixed;
+    top: 0;
+    right: -300px;
+    width: 300px;
+    height: 100%;
+    background-color: white;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
+    transition: right 0.3s ease;
+    z-index: 1050;
+}
+
+#slideMenu.open {
+    right: 0;
+}
+
+#slideMenu .close-btn {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+#slideMenu ul {
+    list-style: none;
+    padding: 20px;
+    margin: 0;
+}
+
+#slideMenu ul li {
+    margin: 15px 0;
+}
+
+#slideMenu ul li a {
+    color: #00000080;
+    text-decoration: none;
+}
+
+#slideMenu ul li a:hover {
+    color: #0056b3;
+}
+
+@media (min-width: 992px) {
+    #slideMenuToggle {
+        display: none;
+    }
+}
+
+@font-face {
+    font-family: 'andreaFont';
+    src: url('../assets/Andrea Bellarosa.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'brillFont';
+    src: url('../assets/Brilian Signature.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'nirpaFont';
+    src: url('../assets/Nirpa.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* Define classes */
+.andrea-text {
+    font-family: 'andreaFont', sans-serif;
+}
+
+.brill-text {
+    font-family: 'brillFont', serif;
+}
+
+.nirpa-text {
+    font-family: 'nirpaFont', cursive;
+}
+
+.times-new-roman {
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.notification-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+  }
+  
+  .notification {
+    padding: 15px 20px;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    margin-bottom: 10px;
+    display: inline-block;
+    opacity: 1;
+    transition: opacity 0.5s ease-in-out;
+  }
+  
+  .success {
+    background-color: #4CAF50;
+  }
+  
+  .fail {
+    background-color: #F44336;
+  }
+  
+  .notification.ng-hide {
+    opacity: 0;
+  }
+
+  .loader-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+  }
+  
+  .loader {
+    border: 8px solid #f3f3f3;
+    border-top: 8px solid #3498db;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
