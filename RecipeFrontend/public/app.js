@@ -5,24 +5,28 @@ app.config(function($routeProvider, $locationProvider) {
 
     $routeProvider
         .when('/', {
-            templateUrl: 'app/views/recipes.html',
-            controller: 'RecipeController'
+            templateUrl: 'app/views/authetication/login.html',
+            controller: 'loginController'
         })
-        .when('/add', {
-            templateUrl: 'app/views/addRecipe.html',
-            controller: 'RecipeController'
+        .when('/register', {
+            templateUrl: 'app/views/authetication/register.html',
+            controller: 'registerController'
         })
         .when('/edit/:id', {
-            templateUrl: 'app/views/editRecipe.html',
-            controller: 'RecipeController'
+            templateUrl: 'app/views/recipeViews/edit/editRecipe.html',
+            controller: 'editController'
         })
         .when('/view/:id', {
-            templateUrl: 'app/views/viewRecipe.html',
-            controller: 'RecipeController'
+            templateUrl: 'app/views/recipeViews/view/viewRecipe.html',
+            controller: 'viewController'
         })
         .when('/week', {
-            templateUrl: 'app/views/recipesfortheweek.html',
+            templateUrl: 'app/views/recipeViews/week/recipesfortheweek.html',
             controller: 'weekrecipesController'
+        })
+        .when('/home', {
+            templateUrl: 'app/views/recipeViews/main/recipes.html',
+            controller: 'recipeController'
         })
         .otherwise({
             redirectTo: '/'

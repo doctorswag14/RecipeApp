@@ -1,7 +1,7 @@
-app.controller('weekrecipesController', function($scope, $routeParams, $location, RecipeService, loaderService, notificationService) {
+app.controller('weekrecipesController', function($scope, $routeParams, $location, recipeService, loaderService, notificationService) {
     if ($routeParams.id) {
         loaderService.showLoader();
-        RecipeService.get($routeParams.id).then(function(response) {
+        recipeService.get($routeParams.id).then(function(response) {
             $scope.recipe = response;
             loaderService.hideLoader();
         })
@@ -12,7 +12,7 @@ app.controller('weekrecipesController', function($scope, $routeParams, $location
           });
     } else {
         loaderService.showLoader();
-        RecipeService.getRecipeForTheWeek().then(function(response) {
+        recipeService.getRecipeForTheWeek().then(function(response) {
             $scope.recipes = response;
             loaderService.hideLoader();
         })
@@ -33,7 +33,7 @@ app.controller('weekrecipesController', function($scope, $routeParams, $location
 
     $scope.setRecipeForTheWeek = function(){
         loaderService.showLoader();
-        RecipeService.SetRecipeForWeek(id).then(function(response) {
+        recipeService.SetRecipeForWeek(id).then(function(response) {
         })
         .catch((error) => {
             console.error(error);
@@ -44,7 +44,7 @@ app.controller('weekrecipesController', function($scope, $routeParams, $location
 
     $scope.removeRecipeForTheWeek = function(){
         loaderService.showLoader();
-        RecipeService.RemoveRecipeForWeek(id).then(function(response) {
+        recipeService.RemoveRecipeForWeek(id).then(function(response) {
             loaderService.hideLoader();
         })
         .catch((error) => {
@@ -62,7 +62,7 @@ app.controller('weekrecipesController', function($scope, $routeParams, $location
 
     $scope.getViewRecipe = function(id){
         loaderService.showLoader();
-        RecipeService.get(id).then(function(response) {
+        recipeService.get(id).then(function(response) {
             SetRecipeItem(response);
             $location.path('/view/' + id)
             loaderService.hideLoader();

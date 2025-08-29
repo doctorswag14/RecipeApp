@@ -1,4 +1,4 @@
-app.factory('RecipeService', function($http, $q) {
+app.factory('recipeService', function($http, $q) {
     var baseUrl = 'http://localhost:8080/api/homerecipes';
 
     //var baseUrl = 'http://thomashometech.local/api/homerecipes';

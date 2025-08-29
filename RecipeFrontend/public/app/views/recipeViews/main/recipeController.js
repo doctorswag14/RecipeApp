@@ -1,7 +1,7 @@
-app.controller('RecipeController', function($scope, $routeParams, $location, RecipeService, notificationService, loaderService) {
+app.controller('recipeController', function($scope, $routeParams, $location, recipeService, notificationService, loaderService) {
     if ($routeParams.id) {
         loaderService.showLoader();
-        RecipeService.get($routeParams.id).then(function(response) {
+        recipeService.get($routeParams.id).then(function(response) {
             $scope.recipe = response;
             loaderService.hideLoader();
         })
@@ -12,7 +12,7 @@ app.controller('RecipeController', function($scope, $routeParams, $location, Rec
           });
     } else {
         loaderService.showLoader();
-        RecipeService.getAll().then(function(response) {
+        recipeService.getAll().then(function(response) {
             $scope.recipes = response;
             loaderService.hideLoader();
         })
@@ -30,7 +30,7 @@ app.controller('RecipeController', function($scope, $routeParams, $location, Rec
     $scope.getEditRecipe = function(id){
         $location.path('/edit/' + id)
         loaderService.showLoader();
-        RecipeService.get(id).then(function(response) {
+        recipeService.get(id).then(function(response) {
             SetRecipeItem(response);
             loaderService.hideLoader();
         });
@@ -46,7 +46,7 @@ app.controller('RecipeController', function($scope, $routeParams, $location, Rec
 
     $scope.setRecipeForTheWeek = function(id){
         loaderService.showLoader();
-        RecipeService.SetRecipeForWeek(id).then(function(response) {
+        recipeService.SetRecipeForWeek(id).then(function(response) {
             loaderService.hideLoader();
             notificationService.success("Recipe for the week added");
         })
@@ -59,7 +59,7 @@ app.controller('RecipeController', function($scope, $routeParams, $location, Rec
 
     $scope.removeRecipeForTheWeek = function(id){
         loaderService.showLoader();
-        RecipeService.RemoveRecipeForWeek(id).then(function(response) {
+        recipeService.RemoveRecipeForWeek(id).then(function(response) {
         })
         .catch((error) => {
             console.error(error);
@@ -74,12 +74,7 @@ app.controller('RecipeController', function($scope, $routeParams, $location, Rec
     });
 
     $scope.getViewRecipe = function(id){
-        loaderService.showLoader();
-        RecipeService.get(id).then(function(response) {
-            SetRecipeItem(response);
-            $location.path('/view/' + id)
-            loaderService.hideLoader();
-        });
+        $location.path('/view/' + id)
     }
 
     $scope.addRecipePage = function() {
@@ -95,7 +90,7 @@ app.controller('RecipeController', function($scope, $routeParams, $location, Rec
         if ($scope.recipe.ImageFile) {
             fd.append('ImageFile', $scope.recipe.ImageFile);
         }
-        RecipeService.create(fd).then(function() {
+        recipeService.create(fd).then(function() {
             $location.path('/');
             loaderService.hideLoader();
             notificationService.success("Recipe was Added successully");
@@ -124,7 +119,7 @@ app.controller('RecipeController', function($scope, $routeParams, $location, Rec
             fd.append('ImageFile', $scope.recipe.ImageFile);
         }
 
-        RecipeService.update($routeParams.id, fd).then(function() {
+        recipeService.update($routeParams.id, fd).then(function() {
             $location.path('/view/' + $routeParams.id);
             loaderService.hideLoader();
             notificationService.success("Recipe was Update successully");
@@ -138,7 +133,7 @@ app.controller('RecipeController', function($scope, $routeParams, $location, Rec
 
     $scope.deleteRecipe = function(id) {
         loaderService.showLoader();
-        RecipeService.delete(id).then(function() {
+        recipeService.delete(id).then(function() {
             location.reload();
             loaderService.hideLoader();
             notificationService.success("Recipe was deleted successully");
