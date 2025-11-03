@@ -1,0 +1,56 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Start API",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/RecipeBackend/bin/Debug/net6.0/RecipeBackend.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/RecipeBackend",
+            "stopAtEntry": false,
+            "serverReadyAction": {
+                "action": "openExternally",
+                "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+            },
+            "launchBrowser": {
+                "enabled": false
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "sourceFileMap": {
+                "/Views": "${workspaceFolder}/Views"
+            }
+        },
+        {
+            "name": "Start Frontend",
+            "type": "node",
+            "request": "launch",
+            "runtimeExecutable": "npx",
+            "runtimeArgs": [
+                "http-server",
+                "--",
+                "-p", "8081"
+            ],
+            "cwd": "${workspaceFolder}/RecipeFrontend",
+            "stopOnEntry": false,
+            "console": "integratedTerminal",
+            "env": {
+                "NODE_ENV": "development"
+            },
+            "outputCapture": "std",
+            "internalConsoleOptions": "neverOpen"
+        }
+    ],
+    "compounds": [
+        {
+            "name": "Run Both API and Frontend",
+            "configurations": [
+                "Start API",
+                "Start Frontend"
+            ]
+        }
+    ]
+}
