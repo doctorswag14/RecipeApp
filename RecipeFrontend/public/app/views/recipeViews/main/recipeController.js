@@ -86,30 +86,45 @@ app.controller('recipeController', function($scope, $routeParams, $location, $wi
         });
     };
 
-    $scope.toggleLike = _toggleLike;
-    function _toggleLike(data){
-        var isLiked = false;
-        if(data.likedbyuser != true){
-            console.log(data);
-           isLiked = true;
-        }
+        $scope.toggleLike = _toggleLike;
 
-        var userdata = $window.localStorage.getItem('thomastechuser');
-        var user = JSON.parse(userdata);
-        
-        var tmpObj = {
-            ItemId: data.id,
-            ItemType: data.type,
-            Username: user.Username,
-            IsLiking: isLiked
-        }
+        function _toggleLike(data) {
+            // Flip the local liked state immediately for instant UI feedback
+            data.likedByUser = !data.likedByUser;
+            console.log("Updated data:", data);
 
-        console.log(tmpObj);
-        recipeService.likeItem(tmpObj)
-        .then(function (response) {
-            console.log(response);
-        })
-    }
+            // Determine whether this action is a Like (true) or Unlike (false)
+            var isLiked = data.likedByUser;
+
+            var userdata = $window.localStorage.getItem('thomastechuser');
+            var user = JSON.parse(userdata);
+
+            // Build payload for API
+            var tmpObj = {
+                ItemId: data.id,
+                ItemType: data.type,
+                Username: user.Username,
+                IsLiking: isLiked  // true = Like, false = Unlike
+            };
+
+            console.log("Sending Like/Unlike:", tmpObj);
+
+            // Call backend service
+            recipeService.likeItem(tmpObj)
+                .then(function (response) {
+                    console.log("API response:", response);
+
+                    // Optionally update like count if API returns it
+                    if (response.data && response.data.likeCount !== undefined) {
+                        data.likeCount = response.data.likeCount;
+                    }
+                })
+                .catch(function (error) {
+                    console.error("Error liking item:", error);
+                    // Roll back UI if the request fails
+                    data.likedByUser = !data.likedByUser;
+                });
+        }
 
     $scope.ShowUserPost = function(){ SetShowPost(true); };
     $scope.HideUserPost = function(){ SetShowPost(false); };

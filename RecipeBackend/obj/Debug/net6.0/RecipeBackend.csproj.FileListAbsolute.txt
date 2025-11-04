@@ -65,3 +65,4 @@
 /Users/blakethomas/Documents/RecipeApp/RecipeBackend/obj/Debug/net6.0/RecipeBackend.pdb
 /Users/blakethomas/Documents/RecipeApp/RecipeBackend/obj/Debug/net6.0/RecipeBackend.genruntimeconfig.cache
 /Users/blakethomas/Documents/RecipeApp/RecipeBackend/obj/Debug/net6.0/ref/RecipeBackend.dll
+/Users/blakethomas/Documents/RecipeApp/RecipeBackend/obj/Debug/net6.0/RecipeBackend.sourcelink.json
