@@ -8,18 +8,18 @@
     <link rel="stylesheet" href="./app/shared/styles.css?v=1.0.1">
 </head>
 <body ng-controller="appController">
-    <nav ng-hide="hideNavbar" class="navbar navbar-expand-md navbar-light bg-light">
-        <img class="navbar-brand" src="./app/shared/logo.png" href="#!/" alt="Logo" width="150" height="100">
+    <nav ng-hide="hideNavbar" class="navbar navbar-expand-md navbar-light bg-light" style="height: 10%;">
+        <img class="navbar-brand" src="./app/shared/logo.png" href="#!/" alt="Logo" width="130" height="90">
         <button class="navbar-toggler" type="button" data-toggle="collapse" 
                 data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" 
                 aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent" style="font-size: 14px;">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="#!/">Home</a>
+                    <a class="nav-link" href="#!/home">Home</a>
                 </li>
                     <li class="nav-item">
                     <a class="nav-link" href="#!/week">Profile</a>
@@ -28,9 +28,9 @@
                     <a class="nav-link" href="#!/week">Week Recipes</a>
                 </li>
             </ul>
-            <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            <form class="form-inline my-2" style="font-size:12px;">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" style="height:28px; width:140px; font-size:12px; padding:2px 6px;">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit" style="height:28px; font-size:12px; padding:2px 8px;">Search</button>
             </form>
         </div>
     </nav>

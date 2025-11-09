@@ -93,33 +93,22 @@ namespace RecipeBackend.Controllers
             }
 
             // --- Load Comments ---
-            var allComments = await _context.UserComments
-                .Where(c => (c.PostID != null && allIds.Contains(c.PostID.Value)))
-                .ToListAsync();
+            var allComments = await _context.UserComments.Where(c => (c.PostID != null && allIds.Contains(c.PostID.Value))).ToListAsync();
 
             // Attach comments to feed items
             foreach (var recipe in recipes)
             {
-                var commentsForRecipe = allComments
-                    .Where(c => c.PostID == recipe.Id && c.PostType == "Recipe")
-                    .ToList();
+                var commentsForRecipe = allComments.Where(c => c.PostID == recipe.Id && c.PostType == "Recipe").ToList();
                 recipe.Comments = BuildCommentTree(commentsForRecipe, null, "RecipeComment", null, userLikedItems);
             }
 
             foreach (var post in posts)
             {
-                var commentsForPost = allComments
-                    .Where(c => c.PostID == post.Id && c.PostType == "UserPost")
-                    .ToList();
-                    post.Comments = BuildCommentTree(commentsForPost, null, "UserPostComment", null, userLikedItems);
+                var commentsForPost = allComments.Where(c => c.PostID == post.Id && c.PostType == "UserPost").ToList();
+                post.Comments = BuildCommentTree(commentsForPost, null, "UserPostComment", null, userLikedItems);
             }
-
-            // Merge feed
-            var merged = recipes.Concat(posts)
-                .OrderByDescending(f => f.CreatedAt)
-                .Skip(page * pageSize)
-                .Take(pageSize)
-                .ToList();
+            
+            var merged = recipes.Concat(posts).OrderByDescending(f => f.CreatedAt).Skip(page * pageSize).Take(pageSize).ToList();
 
             var result = new PagedResultDTO<FeedItemDTO>
             {

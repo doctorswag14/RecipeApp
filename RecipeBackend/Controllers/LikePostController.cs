@@ -60,8 +60,7 @@ namespace RecipeBackend.Controllers
             await _context.SaveChangesAsync();
 
             // Count likes for that item
-            int likeCount = _context.LikedItems
-                .Count(l => l.ItemId == request.ItemId && l.ItemType == request.ItemType);
+            int likeCount = _context.LikedItems.Count(l => l.ItemId == request.ItemId && l.ItemType == request.ItemType);
 
             return Ok(new
             {

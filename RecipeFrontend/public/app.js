@@ -42,7 +42,7 @@ app.config(function($routeProvider, $locationProvider) {
             controller: 'recipeController'
         })
         .when('/add', {
-            templateUrl: 'app/views/recipeViews/add/addRecipes.html',
+            templateUrl: 'app/views/recipeViews/add/addRecipe.html',
             controller: 'addRecipeController'
         })
         .otherwise({

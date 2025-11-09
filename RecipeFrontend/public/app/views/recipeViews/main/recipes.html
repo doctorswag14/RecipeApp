@@ -1,75 +1,47 @@
 <div style="padding: 8px;">
-    <h2>Feed</h2>
-  <button class="mainbutton" ng-click="ShowUserPost()"><i class="fa-solid fa-plus"></i>&nbsp;Add Post</button>
-  <button class="mainbutton" ng-click="ShowUserPost()"><i class="fa-solid fa-folder-closed"></i>&nbsp;Add Recipe</button>
+    <h5>Feed</h5>
+  <button style="height:30px; width:100px; font-size:12px;" class="mainbutton" ng-click="ShowUserPost()"><i class="fa-solid fa-plus"></i>&nbsp;Add Post</button>
+  <button style="height:30px; width:120px; font-size:12px;" class="mainbutton" ng-click="AddRecipe()"><i class="fa-solid fa-folder-closed"></i>&nbsp;Add Recipe</button>
   <textarea ng-model="UserPost" class="form-control" ng-hide="ShowPost == false" placeholder="What is on your mind?"></textarea>
-  <button ng-click="PostUserPost()" ng-hide="ShowPost == false">Post</button>
-  <button ng-click="HideUserPost()" ng-hide="ShowPost == false">Cancel</button>
-
-  <div id="scrollableDiv"
-       style="max-height: 600px; overflow-y: auto; border: 1px solid #ddd; margin-top: 10px;"
-       infinite-scroll="loadMore()"
-       infinite-scroll-distance="1"
-       infinite-scroll-container="'#scrollableDiv'">
-
+  <button class="custombutton1" ng-click="PostUserPost()" ng-hide="ShowPost == false">Post</button>
+  <button class="custombutton1" ng-click="HideUserPost()" ng-hide="ShowPost == false">Cancel</button>
+  <div id="scrollableDiv" style="max-height: 580px; overflow-y: auto; border: 1px solid #ddd; margin-top: 10px;"infinite-scroll="loadMore()"infinite-scroll-distance="1"infinite-scroll-container="'#scrollableDiv'">
     <!-- Feed Items -->
     <div ng-repeat="item in feed track by (item.type + '-' + item.id)">
       <div class="card">
         <div class="card-body">
-
           <!-- Recipe -->
           <div ng-if="item.type === 'recipe'">
             <p class="card-title">{{item.title}}</p>
             <p>{{item.fullName}}</p>
-
             <!-- Recursive Comments -->
-            <div ng-repeat="comment in item.comments | limitTo:(item.commentsExpanded ? item.comments.length : 3)" 
-                 ng-include="'commentTree.html'"></div>
-            <button ng-click="toggleLike(item)"><i class="fa-solid"ng-class="{'fa-thumbs-up': !item.likedByUser,'fa-thumbs-down': item.likedByUser === true}"></i>&nbsp;{{ item.likedByUser ? 'Unlike' : 'Like' }}</button>
-            <button ng-hide="showCommentBox[item.id]" ng-click="toggleCommentBox(item)"><i class="fa-solid fa-comment"></i>&nbspComment</button>
-            <button class="text-button" ng-if="item.comments.length > 3 && !item.commentsExpanded" 
-                    ng-show="item.comments.length > 0" 
-                    ng-click="item.commentsExpanded = true">Show more comments</button>
-            <button class="text-button" ng-if="item.commentsExpanded" 
-                    ng-show="item.comments.length > 0" 
-                    ng-click="item.commentsExpanded = false">Show less</button>
-
+            <div ng-repeat="comment in item.comments | limitTo:(item.commentsExpanded ? item.comments.length : 3)" ng-include="'commentTree.html'"></div>
+            <button style="padding-right: 8px;" class="text-button" ng-click="toggleLike(item)"><i class="fa-solid"ng-class="{'fa-thumbs-up': !item.likedByUser,'fa-thumbs-down': item.likedByUser === true}"></i>&nbsp;{{ item.likedByUser ? 'Unlike' : 'Like' }}</button>
+            <button class="text-button" ng-click="item.commentsExpanded = true"><i class="fa-solid fa-message"></i>&nbsp;Comments</button>
+            <button class="text-button" ng-if="item.commentsExpanded" ng-show="item.comments.length > 0" ng-click="item.commentsExpanded = false">Show less</button>
             <!-- Top-level comment box -->
-            <textarea ng-show="showCommentBox[item.id]" ng-model="newComment[item.id]" placeholder="Add a comment..."></textarea>
-            <button ng-show="showCommentBox[item.id]" ng-click="postComment(item)">Post Comment</button>
-            <button ng-show="showCommentBox[item.id]" ng-click="toggleCommentBox(item)">Cancel</button>
+            <textarea ng-if="item.commentsExpanded" style="width: 100%;" ng-model="newComment[item.id]" placeholder="Add a comment..."></textarea>
+            <button ng-if="item.commentsExpanded" ng-click="postComment(item)">Post</button>
+            <button ng-if="item.commentsExpanded" ng-click="item.commentsExpanded = false">Cancel</button>
           </div>
-
           <!-- Post -->
           <div ng-if="item.type === 'post'">
             <h5>{{item.fullName}}</h5>
             <p class="card-text">{{item.content}}</p>
-                <div style="padding: 8px;">
-                  <button ng-click="toggleLike(item)"><i class="fa-solid" ng-class="{'fa-thumbs-up': !item.likedByUser, 'fa-thumbs-down': item.likedByUser}"></i>&nbsp;{{ item.likedByUser ? 'Unlike' : 'Like' }}</button>
-                  <button ng-hide="showCommentBox[item.id]" ng-click="toggleCommentBox(item)"><i class="fa-solid fa-comment"></i>&nbspComment</button>
-                </div>
-
             <!-- Recursive Comments -->
-            <div ng-repeat="comment in item.comments | limitTo:(item.commentsExpanded ? item.comments.length : 1)" 
-                 ng-include="'commentTree.html'"></div>
-            <button class="text-button" ng-if="item.comments.length > 1 && !item.commentsExpanded" 
-                    ng-show="item.comments.length > 0" 
-                    ng-click="item.commentsExpanded = true">Show comments</button>
-            <button class="text-button" ng-if="item.commentsExpanded" 
-                    ng-show="item.comments.length > 0" 
-                    ng-click="item.commentsExpanded = false">Show less</button>
-
-            <!-- Top-level comment box -->
-            <textarea ng-show="showCommentBox[item.id]" ng-model="newComment[item.id]" placeholder="Add a comment..."></textarea>
-            <button ng-show="showCommentBox[item.id]" ng-click="postComment(item)">Post</button>
-            <button ng-show="showCommentBox[item.id]" ng-click="toggleCommentBox(item)">Cancel</button>
+            <button style="padding-right: 8px;" class="text-button" ng-click="toggleLike(item)"><i class="fa-solid"ng-class="{'fa-thumbs-up': !item.likedByUser,'fa-thumbs-down': item.likedByUser === true}"></i>&nbsp;{{ item.likedByUser ? 'Unlike' : 'Like' }}</button>
+            <textarea ng-if="item.commentsExpanded" style="width: 100%;" ng-model="newComment[item.id]" placeholder="Add a comment..."></textarea>
+            <button ng-if="item.commentsExpanded" ng-click="postComment(item)">Post</button>
+            <button ng-if="item.commentsExpanded" ng-click="item.commentsExpanded = false">Cancel</button>
+            <div ng-repeat="comment in item.comments | limitTo:(item.commentsExpanded ? item.comments.length : 0)" ng-include="'commentTree.html'"></div>
+            <button ng-hide="item.commentsExpanded" class="text-button" ng-click="item.commentsExpanded = true"><i class="fa-solid fa-message"></i>&nbsp;Comments</button>
+            <button class="text-button" ng-if="item.commentsExpanded" ng-show="item.comments.length > 0" ng-click="item.commentsExpanded = false">Show less</button>
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-
 <!-- Recursive Comment Template -->
 <script type="text/ng-template" id="commentTree.html">
   <div class="comment" style="border: 1px solid #ccc; padding: 10px; margin-top: 10px;">
@@ -81,13 +53,12 @@
       </div>
       
     <div ng-show="showReplyBox[comment.commentId]">
-      <textarea ng-model="newReply[comment.commentId]" placeholder="Write a reply..."></textarea>
+      <textarea style="width: 100%;" ng-model="newReply[comment.commentId]" placeholder="Write a reply..."></textarea>
       <div>
           <button ng-click="postReply(item, comment)">Post</button>
           <button ng-click="toggleReplyBox(comment)">Cancel</button>
       </div>
     </div>
-
     <!-- Nested replies -->
     <div class="replies" style="margin-left:20px;" ng-if="comment.replies.length > 0">
       <div ng-repeat="reply in comment.replies" ng-include="'commentTree.html'" ng-init="comment = reply"></div>

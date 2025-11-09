@@ -20,6 +20,10 @@ app.controller('recipeController', function($scope, $routeParams, $location, $wi
         $scope.ShowPost = a;
     }
 
+    function SetShowRecipe(a){
+        $scope.ShowRecipe = a;
+    }
+
     function GetUserPost(){
         return $scope.UserPost;
     }
@@ -35,6 +39,10 @@ app.controller('recipeController', function($scope, $routeParams, $location, $wi
     $scope.toggleReplyBox = function(comment) {
         $scope.showReplyBox[comment.commentId] = !$scope.showReplyBox[comment.commentId];
     };
+
+    $scope.AddRecipe = function(){
+        $location.path('/add');
+    }
 
     // Post a top-level comment
     $scope.postComment = function(item) {
@@ -89,32 +97,23 @@ app.controller('recipeController', function($scope, $routeParams, $location, $wi
         $scope.toggleLike = _toggleLike;
 
         function _toggleLike(data) {
-            // Flip the local liked state immediately for instant UI feedback
             data.likedByUser = !data.likedByUser;
-            console.log("Updated data:", data);
 
-            // Determine whether this action is a Like (true) or Unlike (false)
             var isLiked = data.likedByUser;
 
             var userdata = $window.localStorage.getItem('thomastechuser');
             var user = JSON.parse(userdata);
 
-            // Build payload for API
             var tmpObj = {
                 ItemId: data.id,
                 ItemType: data.type,
                 Username: user.Username,
-                IsLiking: isLiked  // true = Like, false = Unlike
+                IsLiking: isLiked 
             };
-
-            console.log("Sending Like/Unlike:", tmpObj);
 
             // Call backend service
             recipeService.likeItem(tmpObj)
                 .then(function (response) {
-                    console.log("API response:", response);
-
-                    // Optionally update like count if API returns it
                     if (response.data && response.data.likeCount !== undefined) {
                         data.likeCount = response.data.likeCount;
                     }
@@ -140,7 +139,6 @@ app.controller('recipeController', function($scope, $routeParams, $location, $wi
         };
 
         userpostService.AddUserPost(tmpObj).then(function(response) {
-            // maybe prepend post to feed
         });
     };
 
@@ -150,11 +148,10 @@ app.controller('recipeController', function($scope, $routeParams, $location, $wi
         $scope.loading = true;
 
         var userdata = $window.localStorage.getItem('thomastechuser');
+        if(userdata){
         var user = JSON.parse(userdata);
-
         recipeService.getPage($scope.page, $scope.pageSize, user)
             .then(function (response) {
-                console.log(response);
                 var existingKeys = new Set($scope.feed.map(f => f.type + "-" + f.id));
                 var newItems = response.items.filter(f => !existingKeys.has(f.type + "-" + f.id));
 
@@ -173,6 +170,9 @@ app.controller('recipeController', function($scope, $routeParams, $location, $wi
                 loaderService.hideLoader();
                 $scope.loading = false;
             });
+        }else{
+            $location.path('/');
+        }
     }
 
     initLoad();
