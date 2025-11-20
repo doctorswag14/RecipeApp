@@ -8,7 +8,7 @@
             $scope.login = function() {
                 $http.post(url + 'api/auth/login', GetLoginInfo())
                     .then(function(response) {
-                        authService.login(response.data.token);
+                        authService.login(response.data.token, response.data.refreshToken);
                         authService.setUser(response.data);
                         $location.path('/home');
                     }, function(error) {

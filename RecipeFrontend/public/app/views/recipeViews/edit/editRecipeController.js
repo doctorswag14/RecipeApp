@@ -1,6 +1,18 @@
-app.controller('editrecipeController', function($scope, $routeParams, $location, recipeService, notificationService, loaderService) {
+app.controller('editrecipeController', function($scope, $routeParams, $location, recipeService, notificationService, loaderService, authService) {
     function SetRecipeItem(a) {
         $scope.recipe = a;
+    }
+
+    function checkAuth() {
+        const token = $window.localStorage.getItem('token');
+
+        if (!token || authService.isTokenExpired(token)) {
+            authService.logout();
+            return false;
+        } else {
+            authService.scheduleTokenRefresh();
+            return true;
+        }
     }
 
     $scope.getEditRecipe = function(id){
@@ -28,6 +40,7 @@ app.controller('editrecipeController', function($scope, $routeParams, $location,
     };
 
     $scope.updateRecipe = function() {
+        if (!checkAuth()) return;
         var fd = new FormData();
         loaderService.showLoader();
         fd.append('Title', $scope.recipe.title);

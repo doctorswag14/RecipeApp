@@ -36,9 +36,7 @@ namespace RecipeBackend.Controllers
                 return NotFound("User not found");
 
             // Get all liked items for this user
-            var userLikedItems = await _context.LikedItems
-                .Where(l => l.Username == userName)
-                .ToListAsync();
+            var userLikedItems = await _context.LikedItems.Where(l => l.Username == userName).ToListAsync();
 
             // Recipes
             var recipes = await _context.Recipes
@@ -72,13 +70,9 @@ namespace RecipeBackend.Controllers
                 .ToListAsync();
 
             // --- Load Likes for Recipes and Posts ---
-            var allIds = recipes.Select(r => r.Id)
-                .Concat(posts.Select(p => p.Id))
-                .ToList();
+            var allIds = recipes.Select(r => r.Id).Concat(posts.Select(p => p.Id)).ToList();
 
-            var allLikes = await _context.LikedItems
-                .Where(l => allIds.Contains(Convert.ToInt32(l.ItemId)))
-                .ToListAsync();
+            var allLikes = await _context.LikedItems.Where(l => allIds.Contains(Convert.ToInt32(l.ItemId))).ToListAsync();
 
             foreach (var recipe in recipes)
             {
@@ -99,13 +93,13 @@ namespace RecipeBackend.Controllers
             foreach (var recipe in recipes)
             {
                 var commentsForRecipe = allComments.Where(c => c.PostID == recipe.Id && c.PostType == "Recipe").ToList();
-                recipe.Comments = BuildCommentTree(commentsForRecipe, null, "RecipeComment", null, userLikedItems);
+                recipe.Comments = BuildCommentTree(commentsForRecipe, null, "RecipeComment", null, userLikedItems, userName);
             }
 
             foreach (var post in posts)
             {
                 var commentsForPost = allComments.Where(c => c.PostID == post.Id && c.PostType == "UserPost").ToList();
-                post.Comments = BuildCommentTree(commentsForPost, null, "UserPostComment", null, userLikedItems);
+                post.Comments = BuildCommentTree(commentsForPost, null, "UserPostComment", null, userLikedItems, userName);
             }
             
             var merged = recipes.Concat(posts).OrderByDescending(f => f.CreatedAt).Skip(page * pageSize).Take(pageSize).ToList();
@@ -307,33 +301,23 @@ namespace RecipeBackend.Controllers
                 .Select(c => new UserCommentDTO
                 {
                     CommentId = c.CommentID,
-                    Username = _context.AppUsers
-                            .Where(u => u.AppUsersID == c.UserID)
-                            .Select(u => u.Username)
-                            .FirstOrDefault(),
-                    FullName = _context.AppUsers
-                            .Where(u => u.AppUsersID == c.UserID)
-                            .Select(u => u.FullName)
-                            .FirstOrDefault(),
+                    Username = _context.AppUsers.Where(u => u.AppUsersID == c.UserID).Select(u => u.Username).FirstOrDefault(),
+                    FullName = _context.AppUsers.Where(u => u.AppUsersID == c.UserID).Select(u => u.FullName).FirstOrDefault(),
                     Content = c.Content,
                     CreatedAt = c.CreatedAt,
                     ParentCommentId = c.ParentCommentId,
                     CommentType = postType,
                     ReplyType = commentType,
-
-                    Liked = likedItems?.Any(l =>
+                    LikedByUser = _context.LikedItems?.Any(l =>
                         l.ItemId == c.CommentID &&
                         l.ItemType == "Comment" &&     // or use commentType/postType depending on your LikedItems data
                         l.Username == currentUserName) ?? false,
-
-                    LikesCount = likedItems?.Count(l =>
+                    LikesCount = _context.LikedItems?.Count(l =>
                         l.ItemId == c.CommentID &&
                         l.ItemType == "Comment") ?? 0,
-
                     Replies = BuildCommentTree(comments, c.CommentID, "Reply", postType, likedItems, currentUserName)
                 })
-                .OrderByDescending(c => c.CreatedAt)
-                .ToList();
+                .OrderByDescending(c => c.CreatedAt).ToList();
         }
 
     }

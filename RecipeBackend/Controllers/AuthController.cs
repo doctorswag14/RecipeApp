@@ -90,10 +90,12 @@ namespace RecipeBackend.Controller
                 {
                     try
                     {
-                        var token = GenerateJwtToken(user);
+                        var token = GenerateJwtToken(user, minutesValid: 2);
+                        var refreshToken = GenerateJwtToken(user, minutesValid: 1440); // 24h
                         return Ok(new
                         {
                             token,
+                            refreshToken,
                             username = user.Username
                         });
                     }
@@ -115,7 +117,49 @@ namespace RecipeBackend.Controller
             }
         }
 
-        private string GenerateJwtToken(AppUsers user)
+        [HttpPost("refresh")]
+        public IActionResult RefreshToken([FromBody] RefreshDTO data)
+        {
+            if (string.IsNullOrEmpty(data.RefreshToken))
+                return BadRequest(new { message = "Missing refresh token" });
+
+            try
+            {
+                var handler = new JwtSecurityTokenHandler();
+                var key = Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]);
+
+                var principal = handler.ValidateToken(data.RefreshToken, new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ClockSkew = TimeSpan.Zero
+                }, out var validatedToken);
+
+                var username = principal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name || c.Type == JwtRegisteredClaimNames.Sub)?.Value;
+                if (string.IsNullOrEmpty(username)) return Unauthorized(new { message = "Invalid token data" });
+
+                var user = _context.AppUsers.SingleOrDefault(u => u.Username == username);
+                if (user == null) return Unauthorized(new { message = "User not found" });
+
+                var newAccessToken = GenerateJwtToken(user, minutesValid: 2);
+                var newRefreshToken = GenerateJwtToken(user, minutesValid: 1440); // new refresh token
+
+                return Ok(new
+                {
+                    accessToken = newAccessToken,
+                    refreshToken = newRefreshToken,
+                    username = user.Username
+                });
+            }
+            catch
+            {
+                return Unauthorized(new { message = "Invalid or expired refresh token" });
+            }
+        }
+
+        private string GenerateJwtToken(AppUsers user, int minutesValid)
         {
             var key = _configuration["Jwt:Key"];
             if (string.IsNullOrEmpty(key))
@@ -133,9 +177,9 @@ namespace RecipeBackend.Controller
             var username = user?.Username ?? throw new ArgumentNullException(nameof(user.Username), "User username cannot be null.");
             var claims = new[]
             {
-        new Claim(JwtRegisteredClaimNames.Sub, username),
-        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-    };
+            new Claim(JwtRegisteredClaimNames.Sub, username),
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+        };
 
             var issuer = _configuration["Jwt:Issuer"];
             if (string.IsNullOrEmpty(issuer))
@@ -145,7 +189,7 @@ namespace RecipeBackend.Controller
                 issuer: issuer,
                 audience: issuer,
                 claims: claims,
-                expires: DateTime.UtcNow.AddHours(1),
+                expires: DateTime.UtcNow.AddMinutes(minutesValid),
                 signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
