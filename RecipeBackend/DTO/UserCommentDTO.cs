@@ -15,5 +15,6 @@ namespace RecipeBackend.DTO
         public bool LikedByUser { get; set; }
         public bool Liked { get; set; }
         public List<UserCommentDTO>? Replies { get; set; }
+        public long? RepliesCount { get; set; }
     }
 }

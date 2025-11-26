@@ -13,4 +13,5 @@ public class FeedItemDTO
     public int LikesCount { get; set; }
     public bool LikedByUser { get; set; }
     public List<UserCommentDTO> Comments { get; set; }
+    public long? CommentsCount { get; set; }
 }

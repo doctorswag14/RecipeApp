@@ -104,13 +104,12 @@ app.controller('recipeController', function($scope,$routeParams, $location, $win
     $scope.toggleLike = _toggleLike;
     function _toggleLike(data) {
         if (!checkAuth()) return;
-
         data.likedByUser = !data.likedByUser;
         var isLiked = data.likedByUser;
 
         var userdata = $window.localStorage.getItem('thomastechuser');
         var user = JSON.parse(userdata);
-        console.log(data);
+
         var tmpObj = {
             ItemId: data.id ?? data.commentId,
             ItemType: data.type ?? "Comment",

@@ -93,13 +93,17 @@ namespace RecipeBackend.Controllers
             foreach (var recipe in recipes)
             {
                 var commentsForRecipe = allComments.Where(c => c.PostID == recipe.Id && c.PostType == "Recipe").ToList();
-                recipe.Comments = BuildCommentTree(commentsForRecipe, null, "RecipeComment", null, userLikedItems, userName);
+                var allCommentsForRecipe = BuildCommentTree(commentsForRecipe, null, "RecipeComment", null, userLikedItems, userName);
+                recipe.Comments = allCommentsForRecipe;
+                recipe.CommentsCount = allCommentsForRecipe.Count();
             }
 
             foreach (var post in posts)
             {
                 var commentsForPost = allComments.Where(c => c.PostID == post.Id && c.PostType == "UserPost").ToList();
-                post.Comments = BuildCommentTree(commentsForPost, null, "UserPostComment", null, userLikedItems, userName);
+                var allCommentsForPost = BuildCommentTree(commentsForPost, null, "UserPostComment", null, userLikedItems, userName);
+                post.Comments = allCommentsForPost;
+                post.CommentsCount = allCommentsForPost.Count();
             }
             
             var merged = recipes.Concat(posts).OrderByDescending(f => f.CreatedAt).Skip(page * pageSize).Take(pageSize).ToList();
@@ -315,7 +319,8 @@ namespace RecipeBackend.Controllers
                     LikesCount = _context.LikedItems?.Count(l =>
                         l.ItemId == c.CommentID &&
                         l.ItemType == "Comment") ?? 0,
-                    Replies = BuildCommentTree(comments, c.CommentID, "Reply", postType, likedItems, currentUserName)
+                    Replies = BuildCommentTree(comments, c.CommentID, "Reply", postType, likedItems, currentUserName),
+                    RepliesCount = BuildCommentTree(comments, c.CommentID, "Reply", postType, likedItems, currentUserName).Count()
                 })
                 .OrderByDescending(c => c.CreatedAt).ToList();
         }
