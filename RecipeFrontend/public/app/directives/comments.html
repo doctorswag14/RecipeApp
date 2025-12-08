@@ -1,0 +1,42 @@
+  <div class="comment" style="padding: 10px; margin-top: 3px;">
+
+    <p style="margin-bottom: 2px;">
+      <strong>{{comment.fullName}}</strong>: {{comment.content}}
+    </p>
+
+    <!-- Show border only for top-level comments -->
+    <div ng-if="!isReply" style="border-bottom: 1px solid #ccc;">
+      <small>{{comment.createdAt | timeAgoOrDate}}</small>
+
+      <button style="padding: 8px;" class="text-button"
+              ng-hide="showReplyBox[comment.commentId]"
+              ng-click="toggleReplyBox(comment)">
+        <i class="fa-solid fa-reply"></i>{{comment.repliesCount}}
+      </button>
+
+      <button style="padding: 8px;" class="text-button"
+              ng-click="toggleLike(comment)">
+        <i class="fa-solid"
+           ng-class="{
+             'fa-thumbs-up': !comment.likedByUser,
+             'fa-thumbs-down': comment.likedByUser === true
+           }">
+        </i>{{comment.likesCount}}
+      </button>
+    </div>
+
+    <div ng-show="showReplyBox[comment.commentId]">
+      <textarea style="width: 100%;" ng-model="newReply[comment.commentId]"
+                placeholder="Write a reply..."></textarea>
+      <div>
+        <button ng-click="postReply(item, comment)">Post</button>
+        <button ng-click="toggleReplyBox(comment)">Cancel</button>
+      </div>
+    </div>
+
+    <!-- Nested replies -->
+    <div class="replies" style="margin-left:20px;" ng-if="comment.replies.length > 0">
+      <div ng-repeat="reply in comment.replies" ng-include="'app/directives/comments.html'"ng-init="comment = reply; isReply = true">
+      </div>
+    </div>
+  </div>
