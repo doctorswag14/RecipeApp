@@ -8,7 +8,7 @@
       <div style="display: flex; gap: 12px; font-size: 14px; color: gray;">
         <span><strong>0</strong> Friends</span>
       </div>
-      <button style="margin-top: 8px; padding: 6px 12px;" ng-click="followUser()">
+      <button ng-hide="isLoggedOnUser" style="margin-top: 8px; padding: 6px 12px;" ng-click="sendFriendRequest()">
         {{isFriend ? 'UnFriend' : 'Add Friend'}}
       </button>
     </div>

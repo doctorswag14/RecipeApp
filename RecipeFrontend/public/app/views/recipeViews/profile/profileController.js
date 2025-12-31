@@ -9,6 +9,7 @@ app.controller('profileController', function($scope,$routeParams, $location, $wi
     $scope.showCommentBox = {};
     $scope.newReply = {};
     $scope.showReplyBox = {};
+    $scope.isLoggedOnUser = false;
 
     function checkAuth() {
         const token = $window.localStorage.getItem('token');
@@ -153,6 +154,30 @@ app.controller('profileController', function($scope,$routeParams, $location, $wi
         return $scope.UserProfile;
     }
 
+    $scope.sendFriendRequest = function(){
+        var userdata = $window.localStorage.getItem('thomastechuser');
+        var user = JSON.parse(userdata);
+
+        var tmpObj = {
+            SenderUsername: user.Username,
+            ReceiverUsername: $routeParams.username
+        };
+        console.log(tmpObj);
+        profileService.sendFriendRequest(tmpObj)
+        .then(function(response) {
+            notificationService.success("Friend Request Sent!");
+            $scope.isFriend = true;
+        })
+        .catch((error) => {
+            console.error(error);
+            notificationService.fail("Could not send Friend Request");
+        });
+    };
+
+    function SetIaLoggedOnUser(a){
+        $scope.isLoggedOnUser = a;
+    }
+
     $scope.loadMore = _loadMore;
     function _loadMore() {
         if ($scope.loading || $scope.allLoaded) return;
@@ -160,6 +185,11 @@ app.controller('profileController', function($scope,$routeParams, $location, $wi
         var userdata = $window.localStorage.getItem('thomastechuser');
         if (userdata) {
             var user = JSON.parse(userdata);
+
+            if(user.Username === $routeParams.username){
+                SetIaLoggedOnUser(true);
+            }
+
             profileService.getProfile($routeParams.username)
             .then(function(data) {
                 SetUserProfile(data);

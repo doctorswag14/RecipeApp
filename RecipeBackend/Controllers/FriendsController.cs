@@ -32,7 +32,7 @@ namespace RecipeBackend.Controller
         public async Task<IActionResult> SendFriendRequest([FromBody] FriendRequestDTO data)
         {
             AppUsers? sender = _context.AppUsers.Where(a => a.Username == data.SenderUsername).FirstOrDefault();
-            AppUsers? reciver = _context.AppUsers.Where(a => a.Username == data.ReciverUsername).FirstOrDefault();
+            AppUsers? reciver = _context.AppUsers.Where(a => a.Username == data.ReceiverUsername).FirstOrDefault();
 
             if (sender == null || reciver == null)
             {
@@ -60,7 +60,7 @@ namespace RecipeBackend.Controller
         [HttpPost("getFriendRequest")]
         public async Task<IActionResult> GetFriendRequest([FromBody] FriendRequestDTO data)
         {
-            AppUsers? reciver = _context.AppUsers.Where(a => a.Username == data.ReciverUsername).FirstOrDefault();
+            AppUsers? reciver = _context.AppUsers.Where(a => a.Username == data.ReceiverUsername).FirstOrDefault();
 
             if (reciver == null)
             {
@@ -78,7 +78,7 @@ namespace RecipeBackend.Controller
         public async Task<IActionResult> AddFriend([FromBody] FriendRequestDTO data)
         {
             AppUsers? sender = _context.AppUsers.Where(a => a.Username == data.SenderUsername).FirstOrDefault();
-            AppUsers? reciver = _context.AppUsers.Where(a => a.Username == data.ReciverUsername).FirstOrDefault();
+            AppUsers? reciver = _context.AppUsers.Where(a => a.Username == data.ReceiverUsername).FirstOrDefault();
 
             if (sender == null ||reciver == null)
             {
