@@ -3,7 +3,6 @@
 <head>
     <title>Thomas Tech Recipe App</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="./app/shared/styles.css?v=1.0.1">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
@@ -23,10 +22,13 @@
                     <a class="nav-link" href="#!/home">Home</a>
                 </li>
                     <li class="nav-item">
-                    <a class="nav-link" href="#!/week">Profile</a>
+                    <a class="nav-link" href="#!/profile">Profile</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#!/week">Week Recipes</a>
+                </li>
+                    <li class="nav-item">
+                    <a class="nav-link" href="#!/week">Little Chief</a>
                 </li>
             </ul>
             <form class="form-inline my-2" style="font-size:12px;">
@@ -67,20 +69,16 @@
     <script src="app/shared/filters.js"></script>
     <script src="app/services/recipeService.js"></script>
     <script src="app/services/userpostService.js"></script>
-    <script src="app/views/recipeViews/add/addrecipeController.js"></script>
+    <script src="app/views/recipeViews/add/addRecipeController.js"></script>
     <script src="app/views/recipeViews/edit/editrecipeController.js"></script>
     <script src="app/views/recipeViews/view/viewrecipeController.js"></script>
     <script src="app/views/recipeViews/main/recipeController.js"></script>
     <script src="app/views/recipeViews/week/weekrecipesController.js"></script>
     <script src="app/views/authetication/login/loginController.js"></script>
     <script src="app/views/authetication/register/registerController.js"></script>
+    <script src="app/views/recipeViews/profile/profileController.js"></script>
+    <script src="app/views/recipeViews/profile/profileService.js"></script>
     <script src="app/services/authService.js"></script>
     <script src="https://kit.fontawesome.com/a08ba768ef.js" crossorigin="anonymous"></script>
 </body>
 </html>
-
-<style>
-    body {
-        font-family: 'Roboto', sans-serif;
-    }
-</style>

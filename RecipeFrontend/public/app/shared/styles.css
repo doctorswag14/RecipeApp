@@ -19,6 +19,10 @@ body {
     color: white;
 }
 
+body {
+    font-family: 'Roboto', sans-serif;
+}
+
 /* Default text color for all nav links */
 .nav-link {
     color: #00000080; /* Set text color to #00000080 */
@@ -155,7 +159,7 @@ body {
     transition: opacity 0.5s ease-in-out;
   }
 
-  .custombutton1 {
+  button {
   background-color: rgba(51, 51, 51, 0.05);
   border-radius: 8px;
   border-width: 0;

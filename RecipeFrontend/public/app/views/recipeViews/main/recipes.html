@@ -21,8 +21,8 @@
             <button class="text-button" ng-if="item.commentsExpanded" ng-show="item.comments.length > 0" ng-click="item.commentsExpanded = false">Show less</button>
             <!-- Top-level comment box -->
             <textarea ng-if="item.commentsExpanded" style="width: 100%;" ng-model="newComment[item.id]" placeholder="Add a comment..."></textarea>
-            <button ng-if="item.commentsExpanded" ng-click="postComment(item)">Post</button>
-            <button ng-if="item.commentsExpanded" ng-click="item.commentsExpanded = false">Cancel</button>
+            <button ng-if="item.commentsExpanded" class="custombutton1"  ng-click="postComment(item)">Post</button>
+            <button ng-if="item.commentsExpanded" class="custombutton1"  ng-click="item.commentsExpanded = false">Cancel</button>
           </div>
           <!-- Post -->
           <div ng-if="item.type === 'post'">
@@ -34,8 +34,8 @@
             <button style="padding: 8px;" ng-hide="item.commentsExpanded" class="text-button" ng-click="item.commentsExpanded = true"><i class="fa-solid fa-message"></i>&nbsp;{{item.commentsCount}}</button>
             <button class="text-button" ng-if="item.commentsExpanded" ng-show="item.comments.length > 0" ng-click="item.commentsExpanded = false">Show less</button>
             <textarea ng-if="item.commentsExpanded" style="width: 100%;" ng-model="newComment[item.id]" placeholder="Add a comment..."></textarea>
-            <button ng-if="item.commentsExpanded" ng-click="postComment(item)">Post</button>
-            <button ng-if="item.commentsExpanded" ng-click="item.commentsExpanded = false">Cancel</button>
+            <button ng-if="item.commentsExpanded" class="custombutton1"  ng-click="postComment(item)">Post</button>
+            <button ng-if="item.commentsExpanded" class="custombutton1"  ng-click="item.commentsExpanded = false">Cancel</button>
           </div>
         </div>
       </div>

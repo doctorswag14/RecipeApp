@@ -1,0 +1,69 @@
+<div style="padding: 16px; max-width: 800px; margin: auto;">
+  <!-- Profile Header -->
+  <div style="display: flex; margin-bottom: 16px;">
+    <img src="../../../../app/shared/profileImage.png" alt="Profile Picture" style="margin-right: 16px; width: 150px; height: 160px;">
+    <div>
+      <h3>Blake Thomas</h3>
+      <p style="margin: 4px 0; color: gray;">Food lover & recipe creator</p>
+      <div style="display: flex; gap: 12px; font-size: 14px; color: gray;">
+        <span><strong>0</strong> Friends</span>
+      </div>
+      <button style="margin-top: 8px; padding: 6px 12px;" ng-click="followUser()">
+        {{isFriend ? 'UnFriend' : 'Add Friend'}}
+      </button>
+    </div>
+  </div>
+
+  <!-- User Post Box -->
+  <textarea ng-model="UserPost" class="form-control" placeholder="What's on your mind?" style="width: 100%; margin-bottom: 12px; padding: 8px;"></textarea>
+  <!-- <button class="custombutton1" ng-click="postUserPost()">Post</button> -->
+
+  <!-- Feed Section -->
+  <div id="scrollableDiv" style="max-height: 580px; border: 1px solid #ddd; margin-top: 10px;"
+       infinite-scroll="loadMore()" infinite-scroll-distance="1" infinite-scroll-container="'#scrollableDiv'">
+    
+    <!-- Feed Items -->
+    <div ng-repeat="item in feed track by (item.type + '-' + item.id)" style="margin-bottom: 12px;">
+      <div class="card">
+        <div class="card-body">
+          <!-- Recipe Post -->
+          <div ng-if="item.type === 'recipe'">
+            <p class="card-title">{{item.title}}</p>
+            <p>By: {{item.fullName}}</p>
+
+            <!-- Comments -->
+            <div ng-repeat="comment in item.comments | limitTo:(item.commentsExpanded ? item.comments.length : 3)" ng-include="'commentTree.html'"></div>
+
+            <!-- Action Buttons -->
+            <button style="padding: 8px;" class="text-button" ng-click="toggleLike(item)"><i class="fa-solid" ng-class="{'fa-thumbs-up': !item.likedByUser,'fa-thumbs-down': item.likedByUser}"></i>&nbsp;{{item.likesCount}}</button>
+            <button style="padding: 8px;" class="text-button" ng-click="item.commentsExpanded = true"><i class="fa-solid fa-message"></i>&nbsp;{{item.commentsCount}}</button>
+            <button class="text-button" ng-if="item.commentsExpanded && item.comments.length > 0" ng-click="item.commentsExpanded = false">Show less</button>
+
+            <!-- Comment Input -->
+            <textarea ng-if="item.commentsExpanded" style="width: 100%;" ng-model="newComment[item.id]" placeholder="Add a comment..."></textarea>
+            <button ng-if="item.commentsExpanded" class="custombutton1" ng-click="postComment(item)">Post</button>
+            <button ng-if="item.commentsExpanded" class="custombutton1" ng-click="item.commentsExpanded = false">Cancel</button>
+          </div>
+
+          <!-- Standard Post -->
+          <div ng-if="item.type === 'post'">
+            <h5>{{item.fullName}}</h5>
+            <p class="card-text">{{item.content}}</p>
+
+            <!-- Comments -->
+            <div ng-repeat="comment in item.comments | limitTo:(item.commentsExpanded ? item.comments.length : 0)" ng-include="'app/directives/comments.html'" ng-init="isReply = false"></div>
+
+            <!-- Action Buttons -->
+            <button style="padding: 8px;" class="text-button" ng-click="toggleLike(item)"><i class="fa-solid" ng-class="{'fa-thumbs-up': !item.likedByUser,'fa-thumbs-down': item.likedByUser}"></i>&nbsp;{{item.likesCount}}</button>
+            <button style="padding: 8px;" ng-hide="item.commentsExpanded" class="text-button" ng-click="item.commentsExpanded = true"><i class="fa-solid fa-message"></i>&nbsp;{{item.commentsCount}}</button>
+            <button class="text-button" ng-if="item.commentsExpanded && item.comments.length > 0" ng-click="item.commentsExpanded = false">Show less</button>
+            <!-- Comment Input -->
+            <textarea ng-if="item.commentsExpanded" style="width: 100%;" ng-model="newComment[item.id]" placeholder="Add a comment..."></textarea>
+            <button ng-if="item.commentsExpanded" class="custombutton1" ng-click="postComment(item)">Post</button>
+            <button ng-if="item.commentsExpanded" class="custombutton1" ng-click="item.commentsExpanded = false">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

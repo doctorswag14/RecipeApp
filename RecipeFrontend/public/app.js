@@ -1,6 +1,5 @@
 var app = angular.module('recipeApp', ['ngRoute', 'infinite-scroll']);
 
-
 app.config(function($routeProvider, $locationProvider) {
     $locationProvider.html5Mode(false);
 
@@ -44,6 +43,10 @@ app.config(function($routeProvider, $locationProvider) {
         .when('/add', {
             templateUrl: 'app/views/recipeViews/add/addRecipe.html',
             controller: 'addRecipeController'
+        })
+        .when('/profile', {
+            templateUrl: 'app/views/recipeViews/profile/profile.html',
+            controller: 'profileController'
         })
         .otherwise({
             redirectTo: '/'

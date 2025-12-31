@@ -1,4 +1,4 @@
-app.controller('addrecipeController', function($scope, $routeParams, $location, recipeService, notificationService, loaderService, authService, $window) {
+app.controller('addRecipeController', function($scope, $routeParams, $location, recipeService, notificationService, loaderService, authService, $window) {
 
     function checkAuth() {
         const token = $window.localStorage.getItem('token');
