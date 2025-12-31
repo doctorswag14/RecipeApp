@@ -155,9 +155,8 @@ app.controller('recipeController', function($scope,$routeParams, $location, $win
         var userdata = $window.localStorage.getItem('thomastechuser');
         if (userdata) {
             var user = JSON.parse(userdata);
-            recipeService.getPage($scope.page, $scope.pageSize, user)
+            recipeService.getPage($scope.page, $scope.pageSize, user.Username)
                 .then(function (response) {
-                    console.log(response);
                     var existingKeys = new Set($scope.feed.map(f => f.type + "-" + f.id));
                     var newItems = response.items.filter(f => !existingKeys.has(f.type + "-" + f.id));
 

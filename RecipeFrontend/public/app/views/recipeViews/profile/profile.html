@@ -3,7 +3,7 @@
   <div style="display: flex; margin-bottom: 16px;">
     <img src="../../../../app/shared/profileImage.png" alt="Profile Picture" style="margin-right: 16px; width: 150px; height: 160px;">
     <div>
-      <h3>Blake Thomas</h3>
+      <h3>{{UserProfile.fullName}}</h3>
       <p style="margin: 4px 0; color: gray;">Food lover & recipe creator</p>
       <div style="display: flex; gap: 12px; font-size: 14px; color: gray;">
         <span><strong>0</strong> Friends</span>
@@ -15,15 +15,13 @@
   </div>
 
   <!-- User Post Box -->
-  <textarea ng-model="UserPost" class="form-control" placeholder="What's on your mind?" style="width: 100%; margin-bottom: 12px; padding: 8px;"></textarea>
-  <!-- <button class="custombutton1" ng-click="postUserPost()">Post</button> -->
-
-  <!-- Feed Section -->
-  <div id="scrollableDiv" style="max-height: 580px; border: 1px solid #ddd; margin-top: 10px;"
-       infinite-scroll="loadMore()" infinite-scroll-distance="1" infinite-scroll-container="'#scrollableDiv'">
+  <button class="custombutton1" style="padding: 8px;" ng-click="ShowUserPost()">Add Post</button>
+  <textarea style="margin-top: 5px;" ng-hide="!ShowPost" ng-model="UserPost" class="form-control" placeholder="What's on your mind?" style="width: 100%; margin-bottom: 12px; padding: 8px;"></textarea>
+  <button ng-hide="!ShowPost" class="custombutton1" ng-click="PostUserPost()">Post</button>
+  <button ng-hide="!ShowPost" class="custombutton1" ng-click="HideUserPost()">Cancel</button>
     
     <!-- Feed Items -->
-    <div ng-repeat="item in feed track by (item.type + '-' + item.id)" style="margin-bottom: 12px;">
+    <div ng-repeat="item in feed track by (item.type + '-' + item.id)" style="margin-bottom: 12px; margin-top: 5px;">
       <div class="card">
         <div class="card-body">
           <!-- Recipe Post -->

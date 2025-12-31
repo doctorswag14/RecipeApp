@@ -1,4 +1,4 @@
-app.controller('profileController', function($scope,$routeParams, $location, $window,recipeService,notificationService,loaderService, userpostService, authService) {
+app.controller('profileController', function($scope,$routeParams, $location, $window,recipeService,notificationService,loaderService, userpostService, authService, profileService) {
     $scope.feed = [];
     $scope.page = 0;
     $scope.pageSize = 20;
@@ -22,6 +22,9 @@ app.controller('profileController', function($scope,$routeParams, $location, $wi
         }
     }
 
+    $scope.showAddPost = function() {
+    }
+
     function initLoad() {
         if (!checkAuth()) return;
 
@@ -31,9 +34,7 @@ app.controller('profileController', function($scope,$routeParams, $location, $wi
     }
 
     function SetShowPost(a){ $scope.ShowPost = a; }
-    function SetShowRecipe(a){ $scope.ShowRecipe = a; }
     function GetUserPost(){ return $scope.UserPost; }
-    function SetUserPost(a){ $scope.UserPost = a; }
 
     $scope.toggleCommentBox = function(item) {
         $scope.showCommentBox[item.id] = !$scope.showCommentBox[item.id];
@@ -41,10 +42,6 @@ app.controller('profileController', function($scope,$routeParams, $location, $wi
 
     $scope.toggleReplyBox = function(comment) {
         $scope.showReplyBox[comment.commentId] = !$scope.showReplyBox[comment.commentId];
-    };
-
-    $scope.AddRecipe = function(){
-        $location.path('/add');
     };
 
     // Post a top-level comment
@@ -148,6 +145,14 @@ app.controller('profileController', function($scope,$routeParams, $location, $wi
         });
     };
 
+    function SetUserProfile(a){
+        $scope.UserProfile = a;
+    }
+
+    function GetUserProfile(){
+        return $scope.UserProfile;
+    }
+
     $scope.loadMore = _loadMore;
     function _loadMore() {
         if ($scope.loading || $scope.allLoaded) return;
@@ -155,7 +160,10 @@ app.controller('profileController', function($scope,$routeParams, $location, $wi
         var userdata = $window.localStorage.getItem('thomastechuser');
         if (userdata) {
             var user = JSON.parse(userdata);
-            recipeService.getPage($scope.page, $scope.pageSize, user)
+            profileService.getProfile($routeParams.username)
+            .then(function(data) {
+                SetUserProfile(data);
+                recipeService.getPage($scope.page, $scope.pageSize, $routeParams.username)
                 .then(function (response) {
                     console.log(response);
                     var existingKeys = new Set($scope.feed.map(f => f.type + "-" + f.id));
@@ -176,6 +184,7 @@ app.controller('profileController', function($scope,$routeParams, $location, $wi
                     loaderService.hideLoader();
                     $scope.loading = false;
                 });
+            })
         } else {
             $location.path('/');
         }

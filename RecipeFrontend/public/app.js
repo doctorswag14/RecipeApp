@@ -44,7 +44,7 @@ app.config(function($routeProvider, $locationProvider) {
             templateUrl: 'app/views/recipeViews/add/addRecipe.html',
             controller: 'addRecipeController'
         })
-        .when('/profile', {
+        .when('/profile/:username', {
             templateUrl: 'app/views/recipeViews/profile/profile.html',
             controller: 'profileController'
         })
@@ -54,8 +54,15 @@ app.config(function($routeProvider, $locationProvider) {
 });
 
 
-app.controller('appController', function($scope, $rootScope, $location) {
-    //$scope.hideNavbar = false;
+app.controller('appController', function($scope, $rootScope, $location, $window) {
+
+    $scope.GoToProfile = function(){
+        console.log("Going to profile");
+        var userdata = $window.localStorage.getItem('thomastechuser');
+        var user = JSON.parse(userdata);
+        console.log(user);
+        $location.path('/profile/' + user.Username);
+    }
 
     // listen to route changes
     $rootScope.$on('$routeChangeSuccess', function() {

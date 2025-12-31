@@ -6,7 +6,7 @@ app.factory('recipeService', function($http, $q) {
 
     factory.getPage = function(page, pageSize, user) {
         let deferred = $q.defer();
-        $http.get(baseUrl + "?page=" + page + "&pageSize=" + pageSize + "&userName=" + user.Username).then(function(response) {
+        $http.get(baseUrl + "?page=" + page + "&pageSize=" + pageSize + "&userName=" + user).then(function(response) {
             deferred.resolve(response.data);
         }, function(error) {
             deferred.reject(error);
