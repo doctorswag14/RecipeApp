@@ -57,10 +57,8 @@ app.config(function($routeProvider, $locationProvider) {
 app.controller('appController', function($scope, $rootScope, $location, $window) {
 
     $scope.GoToProfile = function(){
-        console.log("Going to profile");
         var userdata = $window.localStorage.getItem('thomastechuser');
         var user = JSON.parse(userdata);
-        console.log(user);
         $location.path('/profile/' + user.Username);
     }
 

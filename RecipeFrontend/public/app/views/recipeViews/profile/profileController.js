@@ -165,7 +165,6 @@ app.controller('profileController', function($scope,$routeParams, $location, $wi
                 SetUserProfile(data);
                 recipeService.getPage($scope.page, $scope.pageSize, $routeParams.username)
                 .then(function (response) {
-                    console.log(response);
                     var existingKeys = new Set($scope.feed.map(f => f.type + "-" + f.id));
                     var newItems = response.items.filter(f => !existingKeys.has(f.type + "-" + f.id));
 
