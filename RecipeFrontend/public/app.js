@@ -54,12 +54,60 @@ app.config(function($routeProvider, $locationProvider) {
 });
 
 
-app.controller('appController', function($scope, $rootScope, $location, $window) {
+app.controller('appController', function($scope, $rootScope, $location, $window, usernotificationService) {
+    $scope.isFriendDropdownOpen = false;
 
+    $scope.toggleFriendDropdown = function ($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
+        $scope.isFriendDropdownOpen = !$scope.isFriendDropdownOpen;
+    };
+
+    // Optional: close when clicking anywhere else
+    document.addEventListener('click', function () {
+        $scope.$applyAsync(function () {
+            $scope.isFriendDropdownOpen = false;
+        });
+    });
+
+    $scope.friendRequests = [];
+
+    $scope.acceptFriendRequest = function(request) {
+        // call API
+    };
+
+    $scope.declineFriendRequest = function(request) {
+        // call API
+    };
+    
     $scope.GoToProfile = function(){
         var userdata = $window.localStorage.getItem('thomastechuser');
         var user = JSON.parse(userdata);
         $location.path('/profile/' + user.Username);
+    }
+
+    function SetFriendRequestCount(a){
+        $scope.friendRequest = a;
+    }
+
+    function GetFriendRequestCount(){
+        var userdata = $window.localStorage.getItem('thomastechuser');
+        var user = JSON.parse(userdata);
+
+        var tmpObj = {
+            SenderUsername: null,
+            ReceiverUsername: user.Username
+        };
+
+        usernotificationService.getFriendRequestCount(tmpObj)
+        .then(function(response) {
+            console.log(response);
+            SetFriendRequestCount(response);
+        })
+        .catch((error) => {
+            console.error(error);
+            notificationService.fail("Could not get Friend Request Count");
+        });
     }
 
     // listen to route changes
@@ -71,6 +119,8 @@ app.controller('appController', function($scope, $rootScope, $location, $window)
             $scope.hideNavbar = true;
         } else {
             $scope.hideNavbar = false;
+
+            GetFriendRequestCount();
         }
     });
 });

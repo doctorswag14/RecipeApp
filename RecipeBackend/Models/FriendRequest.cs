@@ -17,6 +17,7 @@ public class FriendRequest
 
     public string? CreatedBy { get; set; }
     public string? SenderUsername { get; set; }
+    public bool? NotificationViewed {get;set;}
 
     // Navigation Properties
     [ForeignKey(nameof(RequestSenderID))]

@@ -109,5 +109,45 @@ namespace RecipeBackend.Controller
                 return Ok();
             }
         }
+
+        [HttpPost("friendRequests")]
+        public async Task<IActionResult> GetFriendNotification([FromBody] FriendRequestDTO data)
+        {
+            AppUsers? reciver = _context.AppUsers.Where(a => a.Username == data.ReceiverUsername).FirstOrDefault();
+
+            if (reciver == null)
+            {
+                return BadRequest(new { message = "Reciver does not exist." });
+            }
+            else
+            {
+                var friendRequests = _context.FriendRequests.Include(fr => fr.RequestSender).Where(fr =>fr.RequestReceiverID == reciver.AppUsersID && (fr.NotificationViewed == null || fr.NotificationViewed == false)).ToList();
+                return Ok(friendRequests);
+            }
+        }
+
+        [HttpPost("updateNotificationCount")]
+        public async Task<IActionResult> UpdateFriendNotificationCount([FromBody] FriendRequestDTO data)
+        {
+            AppUsers? reciver = _context.AppUsers.Where(a => a.Username == data.ReceiverUsername).FirstOrDefault();
+
+            if (reciver == null)
+            {
+                return BadRequest(new { message = "Reciver does not exist." });
+            }
+            else
+            {
+                List<FriendRequest> friendRequest = _context.FriendRequests.Where(a => a.RequestReceiverID == reciver.AppUsersID && (a.NotificationViewed == null || a.NotificationViewed == false)).ToList();
+
+                foreach(var dataItem in friendRequest)
+                {
+                    dataItem.NotificationViewed = true;
+                }
+
+                await _context.SaveChangesAsync();
+
+                return Ok();
+            }
+        }
     }
 }
