@@ -2,17 +2,9 @@
 <html ng-app="recipeApp">
 <head>
     <title>Thomas Tech Recipe App</title>
-
-    <!-- Bootstrap 4 -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-
-    <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
-
-    <!-- App Styles -->
     <link rel="stylesheet" href="./app/shared/styles.css?v=1.0.1">
-
-    <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
 </head>
 
@@ -27,8 +19,6 @@
     </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent" style="font-size:14px;">
-
-        <!-- LEFT NAV ITEMS -->
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
                 <a class="nav-link" href="#!/home">Home</a>
@@ -46,30 +36,20 @@
                 <a class="nav-link" href="#!/week">Little Chief</a>
             </li>
         </ul>
-
-        <!-- RIGHT SIDE (Friend Requests + Search) -->
         <ul class="navbar-nav align-items-center">
             <li class="nav-item dropdown mr-3"
                 ng-class="{ show: isFriendDropdownOpen }">
-
-                <!-- CLICKABLE NAV BUTTON -->
                 <a class="nav-link" href="" role="button" ng-click="toggleFriendDropdown($event)" style="cursor: pointer;">
                     <i class="fa-solid fa-user-plus"></i>
                     <span class="badge badge-danger ml-1" ng-if="friendRequest.length > 0">{{friendRequest.length}}</span>
                 </a>
-
-                <!-- DROPDOWN MENU (CLICK ONLY) -->
                 <div class="dropdown-menu dropdown-menu-right p-2"
                     ng-show="isFriendDropdownOpen"
                     style="width:300px; max-height:300px; overflow-y:auto; display:block;">
-
-                    <!-- No Requests -->
                     <div class="dropdown-item text-muted text-center"
                         ng-if="friendRequest.length === 0">
                         No friend requests
                     </div>
-
-                    <!-- Requests -->
                     <div class="dropdown-item"
                         ng-repeat="request in friendRequest track by request.friendRequestID">
 
