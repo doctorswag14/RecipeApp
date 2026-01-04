@@ -14,5 +14,16 @@ app.factory('usernotificationService', function($http, $q) {
         return deferred.promise;
     };
 
+    factory.updateFriendRequestCount = function(friendRequest) {
+        let deferred = $q.defer();
+        $http.post(friendsbaseUrl + '/updateNotificationCount', friendRequest, {
+        }).then(function(response) {
+            deferred.resolve(response.data);
+        }, function(error) {
+            deferred.reject(error);
+        });
+        return deferred.promise;
+    };
+
     return factory;
 });

@@ -41,17 +41,17 @@
                 ng-class="{ show: isFriendDropdownOpen }">
                 <a class="nav-link" href="" role="button" ng-click="toggleFriendDropdown($event)" style="cursor: pointer;">
                     <i class="fa-solid fa-user-plus"></i>
-                    <span class="badge badge-danger ml-1" ng-if="friendRequest.length > 0">{{friendRequest.length}}</span>
+                    <span class="badge badge-danger ml-1" ng-if="friendRequestCount > 0">{{friendRequestCount}}</span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right p-2"
                     ng-show="isFriendDropdownOpen"
                     style="width:300px; max-height:300px; overflow-y:auto; display:block;">
                     <div class="dropdown-item text-muted text-center"
-                        ng-if="friendRequest.length === 0">
+                        ng-if="friendRequests.length === 0">
                         No friend requests
                     </div>
                     <div class="dropdown-item"
-                        ng-repeat="request in friendRequest track by request.friendRequestID">
+                        ng-repeat="request in friendRequests track by request.friendRequestID">
 
                         <div class="d-flex justify-content-between align-items-center">
                             <strong>{{ request.requestSender.fullName }}</strong>

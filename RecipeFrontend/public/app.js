@@ -61,7 +61,27 @@ app.controller('appController', function($scope, $rootScope, $location, $window,
         $event.preventDefault();
         $event.stopPropagation();
         $scope.isFriendDropdownOpen = !$scope.isFriendDropdownOpen;
+        UpdateFriendRequestNotification();
     };
+
+    function UpdateFriendRequestNotification() {
+        var userdata = $window.localStorage.getItem('thomastechuser');
+        var user = JSON.parse(userdata);
+
+        var tmpObj = {
+            SenderUsername: null,
+            ReceiverUsername: user.Username
+        };
+
+        usernotificationService.updateFriendRequestCount(tmpObj)
+        .then(function(response) {
+            GetFriendRequestCount();
+        })
+        .catch((error) => {
+            console.error(error);
+            notificationService.fail("Could not get Friend Request Count");
+        });
+    }
 
     // Optional: close when clicking anywhere else
     document.addEventListener('click', function () {
@@ -87,7 +107,11 @@ app.controller('appController', function($scope, $rootScope, $location, $window,
     }
 
     function SetFriendRequestCount(a){
-        $scope.friendRequest = a;
+        $scope.friendRequestCount = a;
+    }
+
+    function SetFriendRequest(a){
+        $scope.friendRequests = a;
     }
 
     function GetFriendRequestCount(){
@@ -101,8 +125,8 @@ app.controller('appController', function($scope, $rootScope, $location, $window,
 
         usernotificationService.getFriendRequestCount(tmpObj)
         .then(function(response) {
-            console.log(response);
-            SetFriendRequestCount(response);
+            SetFriendRequest(response.requests);
+            SetFriendRequestCount(response.count);
         })
         .catch((error) => {
             console.error(error);

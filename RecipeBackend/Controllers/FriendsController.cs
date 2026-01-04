@@ -113,17 +113,22 @@ namespace RecipeBackend.Controller
         [HttpPost("friendRequests")]
         public async Task<IActionResult> GetFriendNotification([FromBody] FriendRequestDTO data)
         {
-            AppUsers? reciver = _context.AppUsers.Where(a => a.Username == data.ReceiverUsername).FirstOrDefault();
+            var receiver = await _context.AppUsers
+                .FirstOrDefaultAsync(a => a.Username == data.ReceiverUsername);
 
-            if (reciver == null)
+            if (receiver == null)
             {
-                return BadRequest(new { message = "Reciver does not exist." });
+                return BadRequest(new { message = "Receiver does not exist." });
             }
-            else
+
+            var friendRequests = _context.FriendRequests.Include(fr => fr.RequestSender).Where(fr => fr.RequestReceiverID == receiver.AppUsersID).ToList();
+            var unreadCount = _context.FriendRequests.Where(fr => fr.RequestReceiverID == receiver.AppUsersID &&(fr.NotificationViewed == null || fr.NotificationViewed == false)).Count();
+
+            return Ok(new
             {
-                var friendRequests = _context.FriendRequests.Include(fr => fr.RequestSender).Where(fr =>fr.RequestReceiverID == reciver.AppUsersID && (fr.NotificationViewed == null || fr.NotificationViewed == false)).ToList();
-                return Ok(friendRequests);
-            }
+                Requests = friendRequests,
+                Count =unreadCount
+            });
         }
 
         [HttpPost("updateNotificationCount")]
