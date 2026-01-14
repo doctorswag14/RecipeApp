@@ -13,6 +13,7 @@ namespace RecipeBackend.Data
         public DbSet<Recipes> Recipes { get; set; }
         public DbSet<LikedItems> LikedItems { get; set; }
         public DbSet<FriendRequest> FriendRequests { get; set; }
-        public DbSet<Friend> Friend { get; set; }
+        public DbSet<Friends> Friends { get; set; }
+        public DbSet<Notifications> Notifications { get; set; }
     }
 }

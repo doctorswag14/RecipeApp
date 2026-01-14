@@ -25,5 +25,27 @@ app.factory('usernotificationService', function($http, $q) {
         return deferred.promise;
     };
 
+    factory.addFriend = function(friendRequest) {
+        let deferred = $q.defer();
+        $http.post(friendsbaseUrl + '/addFriend', friendRequest, {
+        }).then(function(response) {
+            deferred.resolve(response.data);
+        }, function(error) {
+            deferred.reject(error);
+        });
+        return deferred.promise;
+    };
+
+    factory.rejectFriend = function(friendRequest) {
+        let deferred = $q.defer();
+        $http.post(friendsbaseUrl + '/rejectFriend', friendRequest, {
+        }).then(function(response) {
+            deferred.resolve(response.data);
+        }, function(error) {
+            deferred.reject(error);
+        });
+        return deferred.promise;
+    };
+
     return factory;
 });

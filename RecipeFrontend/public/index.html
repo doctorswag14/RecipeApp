@@ -43,48 +43,28 @@
                     <i class="fa-solid fa-user-plus"></i>
                     <span class="badge badge-danger ml-1" ng-if="friendRequestCount > 0">{{friendRequestCount}}</span>
                 </a>
-                <div class="dropdown-menu dropdown-menu-right p-2"
-                    ng-show="isFriendDropdownOpen"
-                    style="width:300px; max-height:300px; overflow-y:auto; display:block;">
-                    <div class="dropdown-item text-muted text-center"
-                        ng-if="friendRequests.length === 0">
+                <div class="dropdown-menu dropdown-menu-right p-2" ng-show="isFriendDropdownOpen" style="width:300px; max-height:300px; overflow-y:auto; display:block;">
+                    <div class="dropdown-item text-muted text-center" ng-if="friendRequests.length === 0">
                         No friend requests
                     </div>
                     <div class="dropdown-item"
                         ng-repeat="request in friendRequests track by request.friendRequestID">
-
                         <div class="d-flex justify-content-between align-items-center">
                             <strong>{{ request.requestSender.fullName }}</strong>
-
                             <div>
-                                <button class="btn btn-sm btn-success mr-1"
-                                        ng-click="acceptFriendRequest(request)">
-                                    ✓
-                                </button>
-                                <button class="btn btn-sm btn-danger"
-                                        ng-click="declineFriendRequest(request)">
-                                    ✕
-                                </button>
+                                <button class="btn btn-sm btn-success mr-1" ng-click="acceptFriendRequest(request)">Confirm</button>
+                                <button class="btn btn-sm btn-danger"ng-click="declineFriendRequest(request)">Decline</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </li>
-
             <li class="nav-item">
                 <form class="form-inline my-2" style="font-size:12px;">
-                    <input class="form-control mr-sm-2"
-                           type="search"
-                           placeholder="Search"
-                           style="height:28px; width:140px; font-size:12px;">
-                    <button class="btn btn-outline-success"
-                            type="submit"
-                            style="height:28px; font-size:12px;">
-                        Search
-                    </button>
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" style="height:28px; width:140px; font-size:12px;">
+                    <button class="btn btn-outline-success" type="submit" style="height:28px; font-size:12px;">Search</button>
                 </form>
             </li>
-
         </ul>
     </div>
 </nav>

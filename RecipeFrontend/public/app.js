@@ -54,7 +54,7 @@ app.config(function($routeProvider, $locationProvider) {
 });
 
 
-app.controller('appController', function($scope, $rootScope, $location, $window, usernotificationService) {
+app.controller('appController', function($scope, $rootScope, $location, $window, usernotificationService, notificationService) {
     $scope.isFriendDropdownOpen = false;
 
     $scope.toggleFriendDropdown = function ($event) {
@@ -75,7 +75,7 @@ app.controller('appController', function($scope, $rootScope, $location, $window,
 
         usernotificationService.updateFriendRequestCount(tmpObj)
         .then(function(response) {
-            GetFriendRequestCount();
+            GetFriendRequest();
         })
         .catch((error) => {
             console.error(error);
@@ -92,12 +92,40 @@ app.controller('appController', function($scope, $rootScope, $location, $window,
 
     $scope.friendRequests = [];
 
-    $scope.acceptFriendRequest = function(request) {
-        // call API
+    $scope.acceptFriendRequest = function(data) {
+        var userdata = $window.localStorage.getItem('thomastechuser');
+        var user = JSON.parse(userdata);
+        var tmpObj = {
+            SenderUsername: data.requestSender.username,
+            ReceiverUsername: user.Username
+        };
+        console.log(tmpObj);
+        usernotificationService.addFriend(tmpObj)
+        .then(function(response) {
+            GetFriendRequest();
+        })
+        .catch((error) => {
+            console.error(error);
+            notificationService.fail("Could not add Friend");
+        });
     };
 
-    $scope.declineFriendRequest = function(request) {
-        // call API
+    $scope.declineFriendRequest = function(data) {
+        var userdata = $window.localStorage.getItem('thomastechuser');
+        var user = JSON.parse(userdata);
+        var tmpObj = {
+            SenderUsername: data.requestSender.username,
+            ReceiverUsername: user.Username
+        };
+
+        usernotificationService.rejectFriend(tmpObj)
+        .then(function(response) {
+            GetFriendRequest();
+        })
+        .catch((error) => {
+            console.error(error);
+            notificationService.fail("Could not reject Friend Request");
+        });
     };
     
     $scope.GoToProfile = function(){
@@ -114,7 +142,7 @@ app.controller('appController', function($scope, $rootScope, $location, $window,
         $scope.friendRequests = a;
     }
 
-    function GetFriendRequestCount(){
+    function GetFriendRequest(){
         var userdata = $window.localStorage.getItem('thomastechuser');
         var user = JSON.parse(userdata);
 
@@ -144,7 +172,7 @@ app.controller('appController', function($scope, $rootScope, $location, $window,
         } else {
             $scope.hideNavbar = false;
 
-            GetFriendRequestCount();
+            GetFriendRequest();
         }
     });
 });

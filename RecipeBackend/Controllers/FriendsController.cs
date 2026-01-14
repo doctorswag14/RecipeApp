@@ -88,7 +88,7 @@ namespace RecipeBackend.Controller
             {
                 FriendRequest? friendRequest = _context.FriendRequests.Where(fr => fr.RequestSenderID == sender.AppUsersID && fr.RequestReceiverID == reciver.AppUsersID).FirstOrDefault();
                 
-                Friend friend = new Friend
+                Friends friend = new Friends
                 {
                     SenderID = sender.AppUsersID,
                     ReceiverID = reciver.AppUsersID,
@@ -96,13 +96,37 @@ namespace RecipeBackend.Controller
                     CreatedBy = sender.Username
                 };
 
-                _context.Friend.Add(friend);
+                _context.Friends.Add(friend);
 
                 await _context.SaveChangesAsync();
 
                 if (friendRequest != null)
                 {
-                     _context.FriendRequests.Remove(friendRequest);
+                    _context.FriendRequests.Remove(friendRequest);
+                }
+                
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
+        }
+
+        [HttpPost("rejectFriend")]
+        public async Task<IActionResult> RejectFriend([FromBody] FriendRequestDTO data)
+        {
+            AppUsers? sender = _context.AppUsers.Where(a => a.Username == data.SenderUsername).FirstOrDefault();
+            AppUsers? reciver = _context.AppUsers.Where(a => a.Username == data.ReceiverUsername).FirstOrDefault();
+
+            if (sender == null ||reciver == null)
+            {
+                return BadRequest(new { message = "Reciver or Sender does not exist." });
+            }
+            else
+            {
+                FriendRequest? friendRequest = _context.FriendRequests.Where(fr => fr.RequestSenderID == sender.AppUsersID && fr.RequestReceiverID == reciver.AppUsersID).FirstOrDefault();
+
+                if (friendRequest != null)
+                {
+                    _context.FriendRequests.Remove(friendRequest);
                 }
                 
                 await _context.SaveChangesAsync();

@@ -3,7 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RecipeBackend.Models
 {
-    public class Friend
+    [Table("Friends")]
+    public class Friends
     {
         [Key]
         public int FriendID { get; set; }
