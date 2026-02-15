@@ -23,6 +23,10 @@ app.controller('editrecipeController', function($scope, $routeParams, $location,
         });
     };
 
+    $scope.goHome = function() {
+        $location.path('/home');
+    };
+
     $scope.updateRecipe = function() {
         var fd = new FormData();
         loaderService.showLoader();

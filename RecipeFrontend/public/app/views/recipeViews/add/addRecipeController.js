@@ -17,6 +17,10 @@ app.controller('addrecipeController', function($scope, $routeParams, $location, 
         $scope.showBackButton = (path === '/add' || path === '/edit' || path === '/view');
     });
 
+    $scope.goHome = function() {
+        $location.path('/home');
+    };
+
     $scope.addRecipe = function() {
         var fd = new FormData();
         loaderService.showLoader();

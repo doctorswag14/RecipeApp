@@ -4,9 +4,9 @@ app.factory('recipeService', function($http, $q) {
     //var baseUrl = 'http://thomashometech.local/api/homerecipes';
     var factory = {}; // Create an object to hold the methods
 
-    factory.getAll = function() {
+    factory.getPage = function(page, pageSize, user) {
         let deferred = $q.defer();
-        $http.get(baseUrl).then(function(response) {
+        $http.get(baseUrl + "?page=" + page + "&pageSize=" + pageSize + "&userName=" + user.Username).then(function(response) {
             deferred.resolve(response.data);
         }, function(error) {
             deferred.reject(error);
@@ -37,6 +37,19 @@ app.factory('recipeService', function($http, $q) {
     factory.create = function(recipe) {
         let deferred = $q.defer();
         $http.post(baseUrl, recipe, {
+            headers: { 'Content-Type': undefined },
+            transformRequest: angular.identity
+        }).then(function(response) {
+            deferred.resolve(response.data);
+        }, function(error) {
+            deferred.reject(error);
+        });
+        return deferred.promise;
+    };
+
+    factory.AddUserPost = function(userPost) {
+        let deferred = $q.defer();
+        $http.post(baseUrl + "/UserPost", userPost, {
             headers: { 'Content-Type': undefined },
             transformRequest: angular.identity
         }).then(function(response) {

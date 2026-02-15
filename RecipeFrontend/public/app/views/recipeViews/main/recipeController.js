@@ -1,27 +1,108 @@
-app.controller('recipeController', function($scope, $routeParams, $location, recipeService, notificationService, loaderService) {
-    if ($routeParams.id) {
-        loaderService.showLoader();
-        recipeService.get($routeParams.id).then(function(response) {
-            $scope.recipe = response;
-            loaderService.hideLoader();
-        })
-        .catch((error) => {
-            console.error(error);
-            loaderService.hideLoader();
-            notificationService.fail("Could not get Recipe please tell husband!!!!");
-          });
-    } else {
-        loaderService.showLoader();
-        recipeService.getAll().then(function(response) {
-            $scope.recipes = response;
-            loaderService.hideLoader();
-        })
-        .catch((error) => {
-            console.error(error);
-            loaderService.hideLoader();
-            notificationService.fail("Could not get Recipe please tell husband!!!!");
-          });
+app.controller('recipeController', function($scope, $routeParams, $location, $window, recipeService, notificationService, loaderService) {
+    $scope.recipes = [];
+    $scope.page = 0;
+    $scope.pageSize = 20;
+    $scope.loading = false;
+    $scope.allLoaded = false;
+
+    function initLoad(){
+        _loadMore();
+        SetShowPost(false);
     }
+
+    function SetShowPost(a){
+        $scope.ShowPost = a
+    }
+
+    function GetUserPost(){
+        return $scope.UserPost;
+    }
+
+    function SetUserPost(a){
+        $scope.UserPost = a;
+    }
+
+    $scope.ShowUserPost = function(){
+        SetShowPost(true);
+    }
+
+    $scope.PostUserPost = function(){
+        var userPost = GetUserPost();
+        var userdata = $window.localStorage.getItem('thomastechuser');
+        var user = JSON.parse(userdata);
+
+        var tmpObj = {
+            Post: userPost,
+            User: user.Username
+        }
+        console.log(tmpObj)
+        recipeService.AddUserPost(tmpObj)
+        .then(function(response) {
+            
+        })
+    }
+
+    $scope.HideUserPost = function(){
+        SetShowPost(false);
+    }
+
+    $scope.loadMore = _loadMore;
+    function _loadMore() {
+        if ($scope.loading || $scope.allLoaded) return;
+
+        $scope.loading = true;
+        loaderService.showLoader();
+
+        var userdata = $window.localStorage.getItem('thomastechuser');
+        var user = JSON.parse(userdata);
+        recipeService.getPage($scope.page, $scope.pageSize, user)
+            .then(function (response) {
+                // Append new recipes, prevent duplicates by ID
+                var existingIds = new Set($scope.recipes.map(r => r.recipeId));
+                var newItems = response.items.filter(r => !existingIds.has(r.recipeId));
+
+                if (newItems.length > 0) {
+                    $scope.recipes = $scope.recipes.concat(newItems);
+                    $scope.page++;
+                } else {
+                    $scope.allLoaded = true; // nothing left to load
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+                notificationService.fail("Could not get Recipe please tell husband!!!!");
+            })
+            .finally(() => {
+                loaderService.hideLoader();
+                $scope.loading = false;
+            });
+    };
+    
+    initLoad()
+    
+    // if ($routeParams.id) {
+    //     loaderService.showLoader();
+    //     recipeService.get($routeParams.id).then(function(response) {
+    //         $scope.recipe = response;
+    //         loaderService.hideLoader();
+    //     })
+    //     .catch((error) => {
+    //         console.error(error);
+    //         loaderService.hideLoader();
+    //         notificationService.fail("Could not get Recipe please tell husband!!!!");
+    //       });
+    // } else {
+    //     loaderService.showLoader();
+    //     recipeService.getAll().then(function(response) {
+    //         $scope.recipes = response;
+    //         loaderService.hideLoader();
+    //     })
+    //     .catch((error) => {
+    //         console.error(error);
+    //         loaderService.hideLoader();
+    //         notificationService.fail("Could not get Recipe please tell husband!!!!");
+    //       });
+    // }
 
     function SetRecipeItem(a) {
         $scope.recipe = a;
@@ -35,10 +116,6 @@ app.controller('recipeController', function($scope, $routeParams, $location, rec
             loaderService.hideLoader();
         });
     }
-
-    $scope.goHome = function() {
-        $location.path('/');
-    };
 
     $scope.goToWeek = function() {
         $location.path('/week');

@@ -5,27 +5,60 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="./app/shared/styles.css?v=1.0.1">
-    <style>
-
-    </style>
 </head>
-<body>
+<body ng-controller="appController">
+    <nav ng-hide="hideNavbar" class="navbar navbar-expand-md navbar-light bg-light">
+        <img class="navbar-brand" src="./app/shared/logo.png" href="#!/" alt="Logo" width="150" height="100">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" 
+                data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" 
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#!/">Home</a>
+                </li>
+                    <li class="nav-item">
+                    <a class="nav-link" href="#!/week">Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#!/week">Week Recipes</a>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+        </div>
+    </nav>
+
+    <!-- Main content area -->
     <div class="container">
         <div class="header-container"></div>
         <div ng-view></div>
     </div>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container d-flex align-items-center justify-content-between">
-            <p>&copy; All content Copyright © 2025 Thomas Tech</p>
-            <div class="social-links">
-            </div>
+    <!-- Notifications -->
+    <div class="notification-container">
+        <div class="notification success" ng-show="notification.showSuccess">
+            {{ notification.successMessage }}
         </div>
-    </footer>
+        <div class="notification fail" ng-show="notification.showFail">
+            {{ notification.failMessage }}
+        </div>
+    </div>
 
+    <!-- Loader -->
+    <div ng-show="isLoading" class="loader-overlay">
+        <div class="loader"></div>
+    </div>
+
+    <!-- AngularJS + Scripts -->
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ngInfiniteScroll/1.3.0/ng-infinite-scroll.min.js"></script>
     <script src="app.js"></script>
     <script src="app/shared/notificationService.js"></script>
     <script src="app/shared/loaderService.js"></script>
@@ -37,21 +70,7 @@
     <script src="app/views/recipeViews/week/weekrecipesController.js"></script>
     <script src="app/views/authetication/login/loginController.js"></script>
     <script src="app/views/authetication/register/registerController.js"></script>
+    <script src="app/views/authetication/authService.js"></script>
     <script src="https://kit.fontawesome.com/a08ba768ef.js" crossorigin="anonymous"></script>
 </body>
-
-<div class="notification-container">
-    <div class="notification success" ng-show="notification.showSuccess">
-      {{ notification.successMessage }}
-    </div>
-  
-    <div class="notification fail" ng-show="notification.showFail">
-     {{ notification.failMessage }}
-    </div>
-</div>
-
-<div ng-show="isLoading" class="loader-overlay">
-    <div class="loader"></div>
-  </div>
-
 </html>

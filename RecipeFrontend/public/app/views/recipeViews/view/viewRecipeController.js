@@ -36,6 +36,10 @@ app.controller('viewController', function($scope, $routeParams, $location, recip
         });
     };
 
+    $scope.goHome = function() {
+        $location.path('/home');
+    };
+
     // File input handler
     $scope.handleFileInput = function(files) {
         $scope.recipe.ImageFile = files[0];
